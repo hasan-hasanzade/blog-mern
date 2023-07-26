@@ -45,7 +45,9 @@ export const getOne = async (req, res) => {
       {
         returnDocument: 'after',
       },
-    ).then((doc, err) => {
+    )
+    .populate('user')
+    .then((doc, err) => {
       if (err) {
         console.log(err);
         return res.status(500).json({
@@ -58,7 +60,8 @@ export const getOne = async (req, res) => {
         });
       }
       res.json(doc);
-    });
+    }
+    );
   } catch (err) {
     console.log(err);
     res.status(500).json({
@@ -103,7 +106,7 @@ export const create = async (req, res) => {
       title: req.body.title,
       text: req.body.text,
       imageUrl: req.body.imageUrl,
-      tags: req.body.tags,
+      tags: req.body.tags.split(','),
       user: req.userId,
     });
 
@@ -130,7 +133,7 @@ export const update = async (req, res) => {
         title: req.body.title,
         text: req.body.text,
         imageUrl: req.body.imageUrl,
-        tags: req.body.tags,
+        tags: req.body.tags.split(','),
         user: req.userId,
       },
     );
